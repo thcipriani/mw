@@ -26,7 +26,12 @@ import (
 	"os/exec"
 	"strings"
 	"time"
+
+	"github.com/kostajh/mw/setup"
 )
+
+func composeOverride() {
+}
 
 var dockerCmd = &cobra.Command{
 	Use:   "docker",
@@ -65,30 +70,7 @@ var startCmd = &cobra.Command{
 			os.Exit(1)
 		}
 		if isLinuxHost() {
-			// TODO: We should also check the contents for correctness, maybe
-			// using docker-compose config and asserting that UID/GID mapping is present
-			// and with correct values.
-			_, err := os.Stat("docker-compose.override.yml")
-			if err != nil {
-				fmt.Println("Creating docker-compose.override.yml for correct user ID and group ID mapping from host to container")
-				var data = `
-version: '3.7'
-services:
-  mediawiki:
-    user: "${MW_DOCKER_UID}:${MW_DOCKER_GID}"
-`
-				file, err := os.Create("docker-compose.override.yml")
-				if err != nil {
-					log.Fatal(err)
-				}
-				defer file.Close()
-				_, err = file.WriteString(data)
-				if err != nil {
-					log.Fatal(err)
-				}
-				file.Sync()
-			}
-		}
+			setup.Linux()
 	},
 }
 

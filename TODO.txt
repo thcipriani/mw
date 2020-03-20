@@ -1,0 +1,9 @@
+Stage command
+-----
+
+1. Add --config flag
+2. Decouple setup tasks, possibly into its own namespace
+3. Add command "stage"
+4. Add argument for "stage" -- "patchset"
+5. Clone patchset as part of stage
+6. Run setup tasks as part of "stage" Post clone
